@@ -15,5 +15,15 @@ describe 'Controller: MainCtrl', ->
       $scope: scope
     }
 
-  it 'should attach a list of awesomeThings to the scope', ->
-    expect(scope.awesomeThings.length).toBe 3
+  describe 'List of Lamplets', ->
+    it 'should have 12 lamplets when initialize', ->
+      expect(scope.lamplets.length).toBe 12
+
+    it 'element of lamplets should be typeof Lamplet', ->
+      expect(typeof scope.lamplets[0]).toBe 'object'
+
+    it 'first element should be light on', ->
+      expect(scope.lamplets[0].lighting).toBe true
+
+    it 'first element\'s color should be #e5147f', ->
+      expect(scope.lamplets[0].color).toBe '#e5147f'
