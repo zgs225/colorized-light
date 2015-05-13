@@ -1,5 +1,7 @@
 'use strict'
 
+# @description abstract of lamplet
+# that control the lamplet's behavior on page
 class Lamplet
   constructor: (@color) ->
     @lighting = true
