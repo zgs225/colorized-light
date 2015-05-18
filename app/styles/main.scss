@@ -3,6 +3,10 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+// settings
+$initial-lamplet-color: #e5147f;
+$lamplet-size: 18px;
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -124,6 +128,17 @@ body {
   to   { background-position: -10000px 5000px; }
 }
 
+// lamplet move
+@include keyframes(lamplet-sine) {
+  0%   { @include translate(0, 0); }
+  100% { @include translate(0, 5px); }
+}
+
+@include keyframes(lamplet-sine-reverse) {
+  0%   { @include translate(0, 5px); }
+  100% { @include translate(0, 0); }
+}
+
 .stars, .twinkling, .clouds {
   top: 0;
   left: 0;
@@ -132,16 +147,68 @@ body {
   width: 100%;
   height: 100%;
   display: block;
-  position: absolute;
+  position: fixed;
+  z-index: -1;
 }
 
 .stars {
   background: black url(/images/stars.png) repeat top center;
-  z-index: 0;
 }
 
 .twinkling {
   background: transparent url(/images/twinkling.png) repeat top center;
-  z-index: 1;
   @include animation('move-twink-back 200s linear infinite');
+}
+
+// Lamplets
+.lamplets {
+  padding: 0;
+  margin-top: 33%;
+
+  li {
+    list-style: none;
+    margin-bottom: 40px;
+
+    &:nth-child(2n) {
+      @include animation('lamplet-sine 1.5s linear infinite alternate');
+    }
+
+    &:nth-child(2n-1) {
+      @include animation('lamplet-sine-reverse 1.5s linear infinite alternate');
+    }
+
+    > button {
+      position: relative;
+      display: inline-block;
+      margin: 0;
+      width: $lamplet-size;
+      height: $lamplet-size;
+      border-radius: 50%;
+
+      &:before, &:after {
+        content: "";
+        position: absolute;
+        width: $lamplet-size;
+        height: $lamplet-size;
+        top: 50%;
+        left: 50%;
+        margin: -9px 0 0 -9px;
+        border-radius: 50%;
+        background: $initial-lamplet-color;
+        @include opacity(0.7);
+      }
+
+      &:before {
+        @include box-shadow(0 0 12px 12px $initial-lamplet-color);
+      }
+
+      &:after {
+        @include transition(500ms);
+      }
+    }
+  }
+}
+
+.game-start-wrapper {
+  margin-top: 27%;
 }

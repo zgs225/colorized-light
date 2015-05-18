@@ -5,11 +5,15 @@
     <div class="twinkling"></div>
   </div>
   <!-- Lamplets -->
-  <div class="lamplets-container">
-    <ul class="lamplets">
-      <li ng-repeat="lamplet in lamplets">
-        {{ lamplet.color }}
+  <div class="container">
+    <ul class="lamplets clearfix">
+      <li ng-repeat="lamplet in lamplets" class="col-md-1 col-sm-2 col-xs-3">
+        <button ng-style="background: {{ lamplet.color }};"></button>
       </li>
     </ul>
+
+    <p class="game-start-wrapper text-center">
+      <button class="button button-pill button-large button-royal button-longshadow" id="game-start-button">Start</button>
+    </p>
   </div>
 </div>
