@@ -8,7 +8,7 @@
   <div class="container">
     <ul class="lamplets clearfix">
       <li ng-repeat="lamplet in lamplets" class="col-md-1 col-sm-2 col-xs-3">
-        <button ng-style="background: {{ lamplet.color }};"></button>
+        <button class="{{ lamplet.__class() }}"></button>
       </li>
     </ul>
 

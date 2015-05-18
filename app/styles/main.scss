@@ -7,6 +7,9 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 $initial-lamplet-color: #e5147f;
 $lamplet-size: 18px;
 
+// lighting colors
+$colors: #e30d20 #e8611e #f19725 #fdee35 #e30f53 #885a9f #5f549e #90c132 #e2147f #179c96 #1ba2e6 #2daa40 #ab5fa0 #8aacd8 #ffffff;
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -204,6 +207,18 @@ body {
 
       &:after {
         @include transition(500ms);
+      }
+    }
+
+    @for $i from 1 through length($colors) {
+      button.color-#{ $i } {
+        &:before, &:after {
+          background: nth($colors, $i);
+        }
+
+        &:before {
+          @include box-shadow(0 0 12px 12px nth($colors, $i));
+        }
       }
     }
   }

@@ -15,6 +15,13 @@ describe 'Controller: MainCtrl', ->
       $scope: scope
     }
 
+  describe 'Lamplet', ->
+    beforeEach ->
+      @lamplet = new Lamplet '#e30d20'
+
+    it '__class function should return color-1', ->
+      expect(@lamplet.__class()).toBe 'color-1'
+
   describe 'List of Lamplets', ->
     it 'should have 12 lamplets when initialize', ->
       expect(scope.lamplets.length).toBe 12
@@ -26,4 +33,4 @@ describe 'Controller: MainCtrl', ->
       expect(scope.lamplets[0].lighting).toBe true
 
     it 'first element\'s color should be #e5147f', ->
-      expect(scope.lamplets[0].color).toBe '#e5147f'
+      expect(scope.lamplets[0].color).toBe '#e2147f'
