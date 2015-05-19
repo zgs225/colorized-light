@@ -52,7 +52,14 @@ angular.module('colorizedLightApp')
         new Lamplet color
     )()
 
-    $scope.showPalette = (currentLamplet) ->
+    $scope.showPalette = (currentLamplet, event) ->
+      $scope.currentLamplet = currentLamplet
       for lamplet in $scope.lamplets
         lamplet.palette.hide()
-      currentLamplet.palette.show()
+      $scope.currentLamplet.palette.show()
+      # Prevent event popup
+      event.stopPropagation()
+
+    $scope.hidePalette = ->
+      if $scope.currentLamplet
+        $scope.currentLamplet.palette.hide()
