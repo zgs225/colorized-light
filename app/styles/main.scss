@@ -229,22 +229,40 @@ body {
       }
     }
 
+    &:nth-child(4n+2) {
+      > .palette {
+        left: -15px;
+      }
+    }
+
+    &:nth-child(4n+3) {
+      > .palette {
+        left: -65px;
+      }
+    }
+
+    &:nth-child(4n+4) {
+      > .palette {
+        left: -115px;
+      }
+    }
+
     // Palette
     > .palette {
       position: absolute;
       margin-top: 30px;
-      height: 285px;
-      width: 285px;
+      height: 200px;
+      width: 200px;
       background-color: rgba(84, 75, 90, 0.4);
       box-shadow: 0 0 1px 1px rgba(84, 75, 90, 0.7);
-      padding: 20px;
+      padding: 15px;
       border: none;
       z-index: 5;
 
       > .palette-item {
         display: inline-block;
-        height: 50px;
-        width: 50px;
+        height: 32px;
+        width: 32px;
         margin: 5px;
         z-index: 5;
         border: none;
@@ -254,6 +272,19 @@ body {
       @for $i from 1 through length($colors) {
         > .palette-item.color-#{ $i } {
           background-color: nth($colors, $i);
+        }
+      }
+    }
+
+    @media screen and (min-width: $screen-md-min) {
+      > .palette {
+        height: 280px;
+        width: 280px;
+        padding: 20px;
+
+        > .palette-item {
+          height: 50px;
+          width: 50px;
         }
       }
     }
