@@ -8,7 +8,7 @@ class Palette
       '#e30d20', '#e86aae', '#f19725', '#fdee35',
       '#e30f53', '#885a9f', '#5f549e', '#90c132',
       '#e2147f', '#179c96', '#1ba2e6', '#2daa40',
-      '#ab5fa0', '#8aacd8', '#ffffff'
+      '#ab5fa0', '#8aacd8', '#ffffff', '#000000'
     ]
 
   discern: (color)->
