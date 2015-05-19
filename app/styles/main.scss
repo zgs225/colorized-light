@@ -173,6 +173,7 @@ body {
 .lamplets {
   padding: 0;
   margin-top: 33%;
+  z-index: 3;
 
   li {
     list-style: none;
@@ -193,6 +194,7 @@ body {
       width: $lamplet-size;
       height: $lamplet-size;
       border-radius: 50%;
+      z-index: 3;
 
       &:before, &:after {
         content: "";
@@ -203,6 +205,7 @@ body {
         left: 50%;
         margin: -9px 0 0 -9px;
         border-radius: 50%;
+        z-index: 3;
         @include opacity(0.7);
       }
 
@@ -220,6 +223,35 @@ body {
 
         &:before {
           @include box-shadow(0 0 12px 12px nth($colors, $i));
+        }
+      }
+    }
+
+    // Palette
+    > .palette {
+      position: absolute;
+      margin-top: 30px;
+      height: 285px;
+      width: 285px;
+      background-color: rgba(84, 75, 90, 0.4);
+      box-shadow: 0 0 1px 1px rgba(84, 75, 90, 0.7);
+      padding: 20px;
+      border: none;
+      z-index: 5;
+
+      > .palette-item {
+        display: inline-block;
+        height: 50px;
+        width: 50px;
+        margin: 5px;
+        z-index: 5;
+        border: none;
+        box-shadow: none;
+      }
+
+      @for $i from 1 through length($colors) {
+        > .palette-item.color-#{ $i } {
+          background-color: nth($colors, $i);
         }
       }
     }
