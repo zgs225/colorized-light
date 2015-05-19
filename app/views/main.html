@@ -8,7 +8,15 @@
   <div class="container">
     <ul class="lamplets clearfix">
       <li ng-repeat="lamplet in lamplets" class="col-md-1 col-sm-2 col-xs-3">
-        <button class="{{ lamplet.__class() }}"></button>
+        <!-- Lamplet -->
+        <button class="{{ lamplet.__class() }}" ng-click="showPalette()"></button>
+
+        <!-- Palette for change color -->
+        <div class="palette" ng-show="{{ lamplet.palette.visible }}">
+          <button ng-repeat="color in lamplet.palette.colors"
+            class="palette-item {{ lamplet.palette.discern(color) }}">
+          </button>
+        </div>
       </li>
     </ul>
 

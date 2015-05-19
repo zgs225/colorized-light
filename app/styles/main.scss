@@ -142,6 +142,12 @@ body {
   100% { @include translate(0, 0); }
 }
 
+// lamplet light twinkling
+@include keyframes(light-twinkling) {
+  0%   { @include scale(0.7); @include opacity(0.8); }
+  100% { @include scale(1.1); @include opacity(0.5); }
+}
+
 .stars, .twinkling, .clouds {
   top: 0;
   left: 0;
@@ -197,12 +203,7 @@ body {
         left: 50%;
         margin: -9px 0 0 -9px;
         border-radius: 50%;
-        background: $initial-lamplet-color;
         @include opacity(0.7);
-      }
-
-      &:before {
-        @include box-shadow(0 0 12px 12px $initial-lamplet-color);
       }
 
       &:after {
@@ -214,6 +215,7 @@ body {
       button.color-#{ $i } {
         &:before, &:after {
           background: nth($colors, $i);
+          @include animation("light-twinkling 2s linear infinite alternate")
         }
 
         &:before {
