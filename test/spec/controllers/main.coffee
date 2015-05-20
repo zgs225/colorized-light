@@ -63,7 +63,7 @@ describe 'Controller: MainCtrl', ->
 
   describe 'Lamplet', ->
     beforeEach ->
-      @lamplet = new Lamplet '#e30d20'
+      @lamplet = new Lamplet '#e30d20', 1
 
     it '__class function should return color-1', ->
       expect(@lamplet.__class()).toBe 'color-1'
@@ -71,18 +71,30 @@ describe 'Controller: MainCtrl', ->
     it 'should has a variable instance of Emitter', ->
       expect(typeof @lamplet.emitter).toBe 'object'
 
+    it 'should has a variable as position of light', ->
+      expect(@lamplet.position).toBeDefined()
+
   describe 'List of Lamplets', ->
+    beforeEach ->
+      @lamplet = scope.lamplets[0]
+
     it 'should have 12 lamplets when initialize', ->
       expect(scope.lamplets.length).toBe 12
 
     it 'element of lamplets should be typeof Lamplet', ->
-      expect(typeof scope.lamplets[0]).toBe 'object'
+      expect(typeof @lamplet).toBe 'object'
 
     it 'first element should be light on', ->
-      expect(scope.lamplets[0].lighting).toBe true
+      expect(@lamplet.lighting).toBe true
 
     it 'first element\'s color should be #e5147f', ->
-      expect(scope.lamplets[0].color).toBe '#e2147f'
+      expect(@lamplet.color).toBe '#e2147f'
+
+    it 'first element\'s position should equal 1', ->
+      expect(@lamplet.position).toEqual 1
+
+    it 'the position of last element of lamplets should equal 12', ->
+      expect(scope.lamplets[scope.lamplets.length - 1].position).toEqual 12
 
     describe 'showPalette', ->
       it 'all lamplet\'s pallete should be hide', ->

@@ -52,7 +52,7 @@ class Emitter
       url: "http://#{ @host }/#{ signal.request }"
       dataType: 'json'
       timeout: ->
-        alert "Can't connected to #{ host }, please check your network"
+        alert "Can't connected to #{ host }, please check your connection"
       success: (message) ->
         console.log 'Emitting signal success.' if message.result == 'success'
 
@@ -70,7 +70,7 @@ class Emitter
  # abstract of lamplet that control the lamplet's behavior on page
 ###
 class Lamplet
-  constructor: (@color) ->
+  constructor: (@color, @position) ->
     @lighting = true
     @palette  = new Palette
     @emitter  = new Emitter
@@ -95,8 +95,8 @@ angular.module('colorizedLightApp')
         '#1ba2e6', '#1ba2e6', '#885a9f',
         '#e2147f', '#8aacd8', '#1ba2e6',
         '#1ba2e6', '#e2147f', '#8aacd8'
-      ] .map (color) ->
-        new Lamplet color
+      ].map (color, index) ->
+        new Lamplet color, index + 1
     )()
 
     $scope.showPalette = (currentLamplet, event) ->
