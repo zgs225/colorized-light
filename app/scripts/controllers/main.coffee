@@ -16,8 +16,9 @@ class Palette
       '#ab5fa0', '#8aacd8', '#ffffff', '#000000'
     ]
 
-  discern: (color)->
-    index = @colors.indexOf(color.toLowerCase()) || 0
+  discern: (color) ->
+    index = @colors.indexOf(color.toLowerCase())
+    index = 0 if index == -1
     "color-#{ index + 1 }"
 
   show: ->
@@ -25,6 +26,9 @@ class Palette
 
   hide: ->
     @visible = false
+
+  includes: (color) ->
+    color in @colors
 
 ###*
  # @ngdoc class
@@ -71,13 +75,27 @@ class Emitter
 ###
 class Lamplet
   constructor: (@color, @position) ->
+    # 是否发光
     @lighting = true
     @palette  = new Palette
     @emitter  = new Emitter
+    # 和小车同步
+    @synchonized()
+
+  synchonized: ->
+    return true if @sync
+    # TODO 和服务器同步
+    @sync = true
+
+  setColor: (color, sync = true) ->
+    if @palette.includes color
+      @color = color
+      @sync  = false
+    @synchonized() if sync
 
   # Generate class name method
   __class: ->
-    @palette.discern(@color)
+    @palette.discern @color
 
 ###*
  # @ngdoc function
@@ -108,5 +126,4 @@ angular.module('colorizedLightApp')
       event.stopPropagation() if event # fix unit test
 
     $scope.hidePalette = ->
-      if $scope.currentLamplet
-        $scope.currentLamplet.palette.hide()
+      $scope.currentLamplet.palette.hide() if $scope.currentLamplet

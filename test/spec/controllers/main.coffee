@@ -61,6 +61,10 @@ describe 'Controller: MainCtrl', ->
       @palette.hide()
       expect(@palette.visible).toBe false
 
+    it 'should recognize if a color included in', ->
+      expect(@palette.includes '#000000').toBe true
+      expect(@palette.includes '#123456').toBe false
+
   describe 'Lamplet', ->
     beforeEach ->
       @lamplet = new Lamplet '#e30d20', 1
@@ -73,6 +77,18 @@ describe 'Controller: MainCtrl', ->
 
     it 'should has a variable as position of light', ->
       expect(@lamplet.position).toBeDefined()
+
+    it 'the color of light should synchonized with car', ->
+      expect(@lamplet.sync).toBe true
+
+    it 'should has a method to change color', ->
+      @lamplet.setColor '#000000', false
+      expect(@lamplet.sync).toBe false
+      expect(@lamplet.color).toBe '#000000'
+
+    it 'should not change color when the color does not included in palette', ->
+      @lamplet.setColor '#123456', false
+      expect(@lamplet.color).toBe '#e30d20'
 
   describe 'List of Lamplets', ->
     beforeEach ->
@@ -90,7 +106,7 @@ describe 'Controller: MainCtrl', ->
     it 'first element\'s color should be #e5147f', ->
       expect(@lamplet.color).toBe '#e2147f'
 
-    it 'first element\'s position should equal 1', ->
+    it 'the position of first element of lamplets should equal 1', ->
       expect(@lamplet.position).toEqual 1
 
     it 'the position of last element of lamplets should equal 12', ->
