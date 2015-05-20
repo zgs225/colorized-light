@@ -1,6 +1,11 @@
 'use strict'
 
-# @desc Abstract of palette that can change lamplet light color
+###*
+ # @ngdoc class
+ # @name Palette
+ # @description
+ # Abstract of palette that can change lamplet light color
+###
 class Palette
   constructor: ->
     @visible = false
@@ -21,12 +26,54 @@ class Palette
   hide: ->
     @visible = false
 
-# @description abstract of lamplet
-# that control the lamplet's behavior on page
+###*
+ # @ngdoc class
+ # @name Signal
+ # @description
+ # Command container
+###
+class Signal
+  constructor: (request) ->
+    @request = request || ""
+
+###*
+ # @ngdoc class
+ # @name Emitter
+ # @description
+ # Transfer signals to car
+###
+class Emitter
+  constructor: ->
+    @signals = []
+    @host    = '192.168.8.1'
+
+  emitOne: (signal) ->
+    jQuery.ajax
+      url: "http://#{ @host }/#{ signal.request }"
+      dataType: 'json'
+      timeout: ->
+        alert "Can't connected to #{ host }, please check your network"
+      success: (message) ->
+        console.log 'Emitting signal success.' if message.result == 'success'
+
+  emit: ->
+    while (signal = @signals.shift())
+      @emitOne(signal)
+
+  register: (signal) ->
+    @signals.push signal
+
+###*
+ # @ngdoc class
+ # @name Lamplet
+ # @description
+ # abstract of lamplet that control the lamplet's behavior on page
+###
 class Lamplet
   constructor: (@color) ->
     @lighting = true
     @palette  = new Palette
+    @emitter  = new Emitter
 
   # Generate class name method
   __class: ->
@@ -58,7 +105,7 @@ angular.module('colorizedLightApp')
         lamplet.palette.hide()
       $scope.currentLamplet.palette.show()
       # Prevent event popup
-      event.stopPropagation()
+      event.stopPropagation() if event # fix unit test
 
     $scope.hidePalette = ->
       if $scope.currentLamplet

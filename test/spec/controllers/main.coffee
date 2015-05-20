@@ -15,6 +15,33 @@ describe 'Controller: MainCtrl', ->
       $scope: scope
     }
 
+  describe 'Signal', ->
+    beforeEach ->
+      @signal = new Signal
+
+    it 'should not be nil', ->
+      expect(@signal).not.toBe undefined
+
+    it 'should have an instance variable to store request', ->
+      expect(typeof @signal.request).toBe 'string'
+
+  describe 'Emitter', ->
+    beforeEach ->
+      @emitter = new Emitter
+
+    it 'should have a list of signals to be sent', ->
+      expect(angular.isArray(@emitter.signals)).toBe true
+
+    it 'should have a method to register signal into emitter', ->
+      @emitter.register new Signal
+      expect(@emitter.signals.length).toEqual 1
+
+    it 'should have a method to emit on signal', ->
+      expect(@emitter.emitOne).toBeDefined()
+
+    it 'should have a method to emit all signals', ->
+      expect(@emitter.emit).toBeDefined()
+
   describe 'Palette', ->
     beforeEach ->
       @palette = new Palette
@@ -40,6 +67,9 @@ describe 'Controller: MainCtrl', ->
 
     it '__class function should return color-1', ->
       expect(@lamplet.__class()).toBe 'color-1'
+
+    it 'should has a variable instance of Emitter', ->
+      expect(typeof @lamplet.emitter).toBe 'object'
 
   describe 'List of Lamplets', ->
     it 'should have 12 lamplets when initialize', ->
