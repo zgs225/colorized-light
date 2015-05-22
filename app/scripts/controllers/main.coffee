@@ -42,6 +42,17 @@ class Signal
 
 ###*
  # @ngdoc class
+ # @name LightSignal
+ # @description
+ # Command container of light
+###
+class LightSignal extends Signal
+  constructor: (@color, @position) ->
+
+
+
+###*
+ # @ngdoc class
  # @name Emitter
  # @description
  # Transfer signals to car
@@ -92,6 +103,9 @@ class Lamplet
       @color = color
       @sync  = false
     @synchonized() if sync
+
+  lightSignal: ->
+    new LightSignal @color, @position
 
   # Generate class name method
   __class: ->

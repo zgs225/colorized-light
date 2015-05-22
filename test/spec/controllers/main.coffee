@@ -25,6 +25,13 @@ describe 'Controller: MainCtrl', ->
     it 'should have an instance variable to store request', ->
       expect(typeof @signal.request).toBe 'string'
 
+   describe 'LightSignal', ->
+     beforeEach ->
+       @lightSignal = new LightSignal '#000000', 1
+
+     it 'should not be nil', ->
+       expect(@lightSignal).toBeDefined()
+
   describe 'Emitter', ->
     beforeEach ->
       @emitter = new Emitter
@@ -89,6 +96,9 @@ describe 'Controller: MainCtrl', ->
     it 'should not change color when the color does not included in palette', ->
       @lamplet.setColor '#123456', false
       expect(@lamplet.color).toBe '#e30d20'
+
+    it 'should has a method to generate light signal', ->
+      expect(@lamplet.lightSignal).toBeDefined()
 
   describe 'List of Lamplets', ->
     beforeEach ->
