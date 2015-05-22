@@ -4,7 +4,7 @@
  # @ngdoc class
  # @name Palette
  # @description
- # Abstract of palette that can change lamplet light color
+ # Abstract of palette that can change the color of light of lamplet
 ###
 class Palette
   constructor: ->
@@ -85,10 +85,15 @@ class Emitter
   constructor: ->
     @signals = []
     @host    = '192.168.8.1'
+    @path    = 'cgi-bin/dn'
 
   emitOne: (signal) ->
+    if typeof jQuery == 'undefined'
+      alert 'Require jQuery'
+      return false
+
     jQuery.ajax
-      url: "http://#{ @host }/#{ signal.request }"
+      url: "http://#{ @host }/#{ @path }/#{ signal.request }"
       dataType: 'json'
       timeout: ->
         alert "Can't connected to #{ host }, please check your connection"
@@ -119,7 +124,7 @@ class Lamplet
 
   synchonized: ->
     return true if @sync
-    # TODO 和服务器同步
+    @emitter.emitOne @lightSignal
     @sync = true
 
   setColor: (color, sync = true) ->
