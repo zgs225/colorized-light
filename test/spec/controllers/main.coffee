@@ -32,6 +32,9 @@ describe 'Controller: MainCtrl', ->
      it 'should not be nil', ->
        expect(@lightSignal).toBeDefined()
 
+     it 'request should be correct', ->
+       expect(@lightSignal.request).toBe '\\x48\\x59\\x3C\\x07\\x11\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x10'
+
   describe 'Emitter', ->
     beforeEach ->
       @emitter = new Emitter

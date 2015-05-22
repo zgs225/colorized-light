@@ -48,8 +48,32 @@ class Signal
 ###
 class LightSignal extends Signal
   constructor: (@color, @position) ->
+    @request =
+      "#{ @header() }#{ @requestLength() }#{ @command() }#{ @positionData() }#{ @colorData() }#{ @checkSum() }"
 
+  header: ->
+    '\\x48\\x59\\x3C'
 
+  requestLength: ->
+    '\\x07'
+
+  command: ->
+    '\\x11'
+
+  positionData: ->
+    zero = '00'
+    hex  = @position.toString 16
+    tmp  = zero.length - hex.length
+    "\\x#{ zero.substr(0, tmp) }#{ hex }"
+
+  colorData: ->
+    r = @color.slice 1, 3
+    g = @color.slice 3, 5
+    b = @color.slice 5, 7
+    "\\x#{ r }\\x#{ r }\\x#{ g }\\x#{ g }\\x#{ b }\\x#{ b }"
+
+  checkSum: ->
+    '\\x10'
 
 ###*
  # @ngdoc class
