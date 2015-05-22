@@ -15,7 +15,7 @@
         <div class="palette" ng-show="lamplet.palette.visible">
           <button ng-repeat="color in lamplet.palette.colors"
             class="palette-item {{ lamplet.palette.discern(color) }}"
-            ng-click="lamplet.color = color" >
+            ng-click="lamplet.setColor(color)" >
           </button>
         </div>
       </li>

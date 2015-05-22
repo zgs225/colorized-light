@@ -95,8 +95,7 @@ class Emitter
     jQuery.ajax
       url: "http://#{ @host }/#{ @path }/#{ signal.request }"
       dataType: 'json'
-      timeout: ->
-        alert "Can't connected to #{ host }, please check your connection"
+      timeout: 500
       success: (message) ->
         console.log 'Emitting signal success.' if message.result == 'success'
 
