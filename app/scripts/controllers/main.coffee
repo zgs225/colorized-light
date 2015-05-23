@@ -40,6 +40,9 @@ class Signal
   constructor: (request) ->
     @request = request || ""
 
+  checkSum: ->
+    '\\x10'
+
 ###*
  # @ngdoc class
  # @name LightSignal
@@ -81,8 +84,34 @@ class LightSignal extends Signal
     b = color.slice 5, 7
     "\\x#{ r }\\x00\\x#{ b }\\x00\\x#{ g }\\x00"
 
-  checkSum: ->
-    '\\x10'
+###*
+ # @ngdoc class
+ # @name CarSignal
+ # @description
+ # Command container of car
+###
+class CarSignal extends Signal
+  ###*
+   # @param behaviour 
+   # 用来区别小车的行动
+   # u 后退
+   # d 前进
+   # l 左转
+   # r 右转
+   # h 停止
+  ###
+  constructor: (@behaviour) ->
+    super "#{ @requestFile() }?#{ @dataLength() }#{ @behaviourAsHex() }#{ @checkSum() }"
+
+  requestFile: ->
+    'che2.sh'
+
+  dataLength: ->
+    switch @behaviour
+      when 'd' then '\\x00'
+
+  behaviourAsHex: ->
+    "\\x#{ @behaviour.charCodeAt().toString 16 }"
 
 ###*
  # @ngdoc class
@@ -114,6 +143,17 @@ class Emitter
 
   register: (signal) ->
     @signals.push signal
+
+###*
+ # @ngdoc class
+ # @name CarController
+ # @description
+ # Model to control the car
+###
+class CarController
+  constructor: ->
+    @emitter  = new Emitter
+    @goSignal = new CarSignal 'd'
 
 ###*
  # @ngdoc class
@@ -193,3 +233,17 @@ angular.module('colorizedLightApp')
 
     $scope.hidePalette = ->
       $scope.currentLamplet.palette.hide() if $scope.currentLamplet
+
+    # 监听屏幕倾斜
+    $scope.listenDeviceOrientation = ->
+      window.addEventListener 'deviceorientation', (event) ->
+
+    # 移除屏幕监听
+    $scope.removeListenDeviceOrientation = ->
+      window.removeEventListener 'deviceorientation'
+
+
+    # 游戏开始
+    $scope.gameStart = ->
+      # 添加监听器
+      $scope.listenDeviceOrientation()

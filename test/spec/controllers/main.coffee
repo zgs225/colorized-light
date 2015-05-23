@@ -19,6 +19,26 @@ describe 'Controller: MainCtrl', ->
     it 'should has a method to start game', ->
       expect(scope.gameStart).toBeDefined()
 
+    it 'should has a method to listen window orientation', ->
+      expect(scope.listenDeviceOrientation).toBeDefined()
+
+    it 'should has a method to remove window orientation listener', ->
+      expect(scope.removeListenDeviceOrientation).toBeDefined()
+
+  describe 'CarController', ->
+    beforeEach ->
+      @carController = new CarController
+
+    it 'CarController shoud be defined', ->
+      expect(CarController).toBeDefined()
+
+    it 'should has an emitter to emit signal', ->
+      expect(@carController.emitter).toBeDefined()
+
+    it 'should has a variable to store go signal', ->
+      expect(@carController.goSignal).toBeDefined()
+      expect(@carController.goSignal.behaviour).toBe 'd'
+
   describe 'Signal', ->
     beforeEach ->
       @signal = new Signal
@@ -38,6 +58,16 @@ describe 'Controller: MainCtrl', ->
 
      it 'request should be correct', ->
        expect(@lightSignal.request).toBe 'ping.sh?\\x48\\x59\\x3C\\x19\\x11\\x01\\xe2\\x00\\x7f\\x00\\x14\\x00\\x88\\x00\\x9f\\x00\\x5a\\x00\\x8a\\x00\\xd8\\x00\\xac\\x00\\x1b\\x00\\xe6\\x00\\xa2\\x00\\x10'
+
+   describe 'CarSignal', ->
+     beforeEach ->
+       @carSignal = new CarSignal 'd'
+
+     it 'should be defined', ->
+       expect(CarSignal).toBeDefined()
+
+     it 'request should be correct when behaviour equals d', ->
+       expect(@carSignal.request).toBe 'che2.sh?\\x00\\x64\\x10'
 
   describe 'Emitter', ->
     beforeEach ->
