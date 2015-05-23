@@ -100,6 +100,9 @@ describe 'Controller: MainCtrl', ->
       expect(@lamplet.sync).toBe false
       expect(@lamplet.color).toBe '#000000'
 
+    it 'chained to other lamplets', ->
+      expect(@lamplet.lampletsOnSameScreen).toBeDefined()
+
     it 'should not change color when the color does not included in palette', ->
       @lamplet.setColor '#123456', false
       expect(@lamplet.color).toBe '#e30d20'
@@ -134,6 +137,9 @@ describe 'Controller: MainCtrl', ->
 
     it 'the last element of lamplets should on screen 3', ->
       expect(scope.lamplets[scope.lamplets.length - 1].onScreen).toBe 3
+
+    it 'the lamplets on the same screen of first lamplet should be 4', ->
+      expect(@lamplet.lampletsOnSameScreen.length).toBe 4
 
     describe 'showPalette', ->
       it 'all lamplet\'s pallete should be hide', ->

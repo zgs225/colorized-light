@@ -122,14 +122,14 @@ class Lamplet
     @palette  = new Palette
     @emitter  = new Emitter
     @onScreen = @whichScreen()
+    @lampletsOnSameScreen = []
     # 和小车同步
     @synchonized()
 
   whichScreen: ->
-    return 3 if @position > 9
-    return 2 if @position > 5
+    return 3 if @position >= 9
+    return 2 if @position >= 5
     return 1
-
 
   synchonized: ->
     return true if @sync
@@ -168,6 +168,11 @@ angular.module('colorizedLightApp')
       ].map (color, index) ->
         new Lamplet color, index + 1
     )()
+
+    # 给小灯分配屏幕关系
+    for lamplet in $scope.lamplets
+      for lamp in $scope.lamplets
+        lamplet.lampletsOnSameScreen.push lamp if lamplet.onScreen == lamp.onScreen
 
     $scope.showPalette = (currentLamplet, event) ->
       $scope.currentLamplet = currentLamplet
