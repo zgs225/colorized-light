@@ -15,6 +15,9 @@ describe 'Controller: MainCtrl', ->
       $scope: scope
     }
 
+  it 'should has a car controller in scope', ->
+    expect(scope.carController).toBeDefined()
+
   describe 'Game start', ->
     it 'should has a method to start game', ->
       expect(scope.gameStart).toBeDefined()
@@ -39,6 +42,16 @@ describe 'Controller: MainCtrl', ->
       expect(@carController.goSignal).toBeDefined()
       expect(@carController.goSignal.behaviour).toBe 'd'
 
+    it 'should has a variable to store stop signal', ->
+      expect(@carController.stopSignal).toBeDefined()
+      expect(@carController.stopSignal.behaviour).toBe 'h'
+
+    it 'should has a method to controll the car go ahead', ->
+      expect(@carController.go).toBeDefined()
+
+    it 'should has a method t ocontroller the car to stop', ->
+      expect(@carController.stop).toBeDefined()
+
   describe 'Signal', ->
     beforeEach ->
       @signal = new Signal
@@ -61,13 +74,17 @@ describe 'Controller: MainCtrl', ->
 
    describe 'CarSignal', ->
      beforeEach ->
-       @carSignal = new CarSignal 'd'
 
      it 'should be defined', ->
        expect(CarSignal).toBeDefined()
 
      it 'request should be correct when behaviour equals d', ->
+       @carSignal = new CarSignal 'd'
        expect(@carSignal.request).toBe 'che2.sh?\\x00\\x64\\x10'
+
+     it 'request should be correct when behaviour equals h', ->
+       @carSignal = new CarSignal 'h'
+       expect(@carSignal.request).toBe 'che2.sh?\\x00\\x68\\x10'
 
   describe 'Emitter', ->
     beforeEach ->

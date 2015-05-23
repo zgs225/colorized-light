@@ -108,7 +108,8 @@ class CarSignal extends Signal
 
   dataLength: ->
     switch @behaviour
-      when 'd' then '\\x00'
+      when 'd', 'h'
+        '\\x00'
 
   behaviourAsHex: ->
     "\\x#{ @behaviour.charCodeAt().toString 16 }"
@@ -152,8 +153,15 @@ class Emitter
 ###
 class CarController
   constructor: ->
-    @emitter  = new Emitter
-    @goSignal = new CarSignal 'd'
+    @emitter    = new Emitter
+    @goSignal   = new CarSignal 'd'
+    @stopSignal = new CarSignal 'h'
+
+  go: ->
+    @emitter.emitOne @goSignal
+
+  stop: ->
+    @emitter.emitOne @stopSignal
 
 ###*
  # @ngdoc class
@@ -234,6 +242,8 @@ angular.module('colorizedLightApp')
     $scope.hidePalette = ->
       $scope.currentLamplet.palette.hide() if $scope.currentLamplet
 
+    $scope.carController = new CarController
+
     # 监听屏幕倾斜
     $scope.listenDeviceOrientation = ->
       window.addEventListener 'deviceorientation', (event) ->
@@ -245,5 +255,11 @@ angular.module('colorizedLightApp')
 
     # 游戏开始
     $scope.gameStart = ->
+      # Go
+      $scope.carController.go()
+
       # 添加监听器
       $scope.listenDeviceOrientation()
+
+      # Stop
+      $scope.carController.stop()
