@@ -49,7 +49,10 @@ class Signal
 class LightSignal extends Signal
   constructor: (@color, @position) ->
     @request =
-      "#{ @header() }#{ @requestLength() }#{ @command() }#{ @positionData() }#{ @colorData() }#{ @checkSum() }"
+      "#{ @requestFile() }?#{ @header() }#{ @requestLength() }#{ @command() }#{ @positionData() }#{ @colorData() }#{ @checkSum() }"
+
+  requestFile: ->
+    'ping.sh'
 
   header: ->
     '\\x48\\x59\\x3C'
@@ -88,14 +91,14 @@ class Emitter
     @path    = 'cgi-bin/dn'
 
   emitOne: (signal) ->
-    if typeof jQuery == 'undefined'
-      alert 'Require jQuery'
-      return false
+    return false if typeof jQuery == 'undefined'
 
     jQuery.ajax
       url: "http://#{ @host }/#{ @path }/#{ signal.request }"
       dataType: 'json'
       timeout: 500
+      crossDomain: true
+      async: false
       success: (message) ->
         console.log 'Emitting signal success.' if message.result == 'success'
 
@@ -118,12 +121,19 @@ class Lamplet
     @lighting = true
     @palette  = new Palette
     @emitter  = new Emitter
+    @onScreen = @whichScreen()
     # 和小车同步
     @synchonized()
 
+  whichScreen: ->
+    return 3 if @position > 9
+    return 2 if @position > 5
+    return 1
+
+
   synchonized: ->
     return true if @sync
-    @emitter.emitOne @lightSignal
+    @emitter.emitOne @lightSignal()
     @sync = true
 
   setColor: (color, sync = true) ->

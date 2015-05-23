@@ -15,6 +15,10 @@ describe 'Controller: MainCtrl', ->
       $scope: scope
     }
 
+  describe 'Game start', ->
+    it 'should has a method to start game', ->
+      expect(scope.gameStart).toBeDefined()
+
   describe 'Signal', ->
     beforeEach ->
       @signal = new Signal
@@ -33,7 +37,7 @@ describe 'Controller: MainCtrl', ->
        expect(@lightSignal).toBeDefined()
 
      it 'request should be correct', ->
-       expect(@lightSignal.request).toBe '\\x48\\x59\\x3C\\x07\\x11\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x10'
+       expect(@lightSignal.request).toBe 'ping.sh?\\x48\\x59\\x3C\\x07\\x11\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x10'
 
   describe 'Emitter', ->
     beforeEach ->
@@ -124,6 +128,12 @@ describe 'Controller: MainCtrl', ->
 
     it 'the position of last element of lamplets should equal 12', ->
       expect(scope.lamplets[scope.lamplets.length - 1].position).toEqual 12
+
+    it 'first element of lamplets should on screen 1', ->
+      expect(@lamplet.onScreen).toBe 1
+
+    it 'the last element of lamplets should on screen 3', ->
+      expect(scope.lamplets[scope.lamplets.length - 1].onScreen).toBe 3
 
     describe 'showPalette', ->
       it 'all lamplet\'s pallete should be hide', ->
