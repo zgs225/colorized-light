@@ -47,9 +47,9 @@ class Signal
  # Command container of light
 ###
 class LightSignal extends Signal
-  constructor: (@color, @position) ->
+  constructor: (@lamplets) ->
     @request =
-      "#{ @requestFile() }?#{ @header() }#{ @requestLength() }#{ @command() }#{ @positionData() }#{ @colorData() }#{ @checkSum() }"
+      "#{ @requestFile() }?#{ @header() }#{ @requestLength() }#{ @command() }#{ @positionData() }#{ @colorDataForLamplets() }#{ @checkSum() }"
 
   requestFile: ->
     'ping.sh'
@@ -58,22 +58,28 @@ class LightSignal extends Signal
     '\\x48\\x59\\x3C'
 
   requestLength: ->
-    '\\x07'
+    '\\x19'
 
   command: ->
     '\\x11'
 
   positionData: ->
     zero = '00'
-    hex  = @position.toString 16
+    hex  = @lamplets[0].onScreen.toString 16
     tmp  = zero.length - hex.length
     "\\x#{ zero.substr(0, tmp) }#{ hex }"
 
-  colorData: ->
-    r = @color.slice 1, 3
-    g = @color.slice 3, 5
-    b = @color.slice 5, 7
-    "\\x#{ r }\\x#{ r }\\x#{ g }\\x#{ g }\\x#{ b }\\x#{ b }"
+  colorDataForLamplets: ->
+    result = ''
+    for lamplet in @lamplets
+      result += @colorData(lamplet.color)
+    result
+
+  colorData: (color) ->
+    r = color.slice 1, 3
+    g = color.slice 3, 5
+    b = color.slice 5, 7
+    "\\x#{ r }\\x00\\x#{ b }\\x00\\x#{ g }\\x00"
 
   checkSum: ->
     '\\x10'
@@ -123,8 +129,6 @@ class Lamplet
     @emitter  = new Emitter
     @onScreen = @whichScreen()
     @lampletsOnSameScreen = []
-    # 和小车同步
-    @synchonized()
 
   whichScreen: ->
     return 3 if @position >= 9
@@ -134,7 +138,8 @@ class Lamplet
   synchonized: ->
     return true if @sync
     @emitter.emitOne @lightSignal()
-    @sync = true
+    for lamplet in @lampletsOnSameScreen
+      lamplet.sync = true
 
   setColor: (color, sync = true) ->
     if @palette.includes color
@@ -143,7 +148,7 @@ class Lamplet
     @synchonized() if sync
 
   lightSignal: ->
-    new LightSignal @color, @position
+    new LightSignal @lampletsOnSameScreen
 
   # Generate class name method
   __class: ->
@@ -173,6 +178,10 @@ angular.module('colorizedLightApp')
     for lamplet in $scope.lamplets
       for lamp in $scope.lamplets
         lamplet.lampletsOnSameScreen.push lamp if lamplet.onScreen == lamp.onScreen
+
+    # 同步小车灯光
+    for lamplet in $scope.lamplets
+      lamplet.synchonized()
 
     $scope.showPalette = (currentLamplet, event) ->
       $scope.currentLamplet = currentLamplet

@@ -31,13 +31,13 @@ describe 'Controller: MainCtrl', ->
 
    describe 'LightSignal', ->
      beforeEach ->
-       @lightSignal = new LightSignal '#000000', 1
+       @lightSignal = new LightSignal(scope.lamplets.slice(0, 4))
 
      it 'should not be nil', ->
        expect(@lightSignal).toBeDefined()
 
      it 'request should be correct', ->
-       expect(@lightSignal.request).toBe 'ping.sh?\\x48\\x59\\x3C\\x07\\x11\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x10'
+       expect(@lightSignal.request).toBe 'ping.sh?\\x48\\x59\\x3C\\x19\\x11\\x01\\xe2\\x00\\x7f\\x00\\x14\\x00\\x88\\x00\\x9f\\x00\\x5a\\x00\\x8a\\x00\\xd8\\x00\\xac\\x00\\x1b\\x00\\xe6\\x00\\xa2\\x00\\x10'
 
   describe 'Emitter', ->
     beforeEach ->
@@ -93,7 +93,7 @@ describe 'Controller: MainCtrl', ->
       expect(@lamplet.position).toBeDefined()
 
     it 'the color of light should synchonized with car', ->
-      expect(@lamplet.sync).toBe true
+      expect(@lamplet.sync).toBe undefined
 
     it 'should has a method to change color', ->
       @lamplet.setColor '#000000', false
