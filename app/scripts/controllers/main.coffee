@@ -101,7 +101,7 @@ class CarSignal extends Signal
    # h 停止
   ###
   constructor: (@behaviour) ->
-    super "#{ @requestFile() }?#{ @dataLength() }#{ @behaviourAsHex() }#{ @checkSum() }"
+    super "#{ @requestFile() }?#{ @dataLength() }#{ @behaviourAsHex() }#{ @behaviourData() }#{ @checkSum() }"
 
   requestFile: ->
     'che2.sh'
@@ -110,9 +110,18 @@ class CarSignal extends Signal
     switch @behaviour
       when 'd', 'h'
         '\\x00'
+      when 'l', 'r'
+        '\\x01'
 
   behaviourAsHex: ->
     "\\x#{ @behaviour.charCodeAt().toString 16 }"
+
+  behaviourData: ->
+    switch @behaviour
+      when 'l', 'r'
+        "\\x0{{level}}"
+      else
+        ''
 
 ###*
  # @ngdoc class
@@ -156,12 +165,21 @@ class CarController
     @emitter    = new Emitter
     @goSignal   = new CarSignal 'd'
     @stopSignal = new CarSignal 'h'
+    @leftSignal = new CarSignal 'l'
 
   go: ->
     @emitter.emitOne @goSignal
 
   stop: ->
     @emitter.emitOne @stopSignal
+
+  left: (level = 1) ->
+    level = 1 if level < 1
+    level = 9 if level > 9
+    @leftSignal.__originRequest = @leftSignal.request
+    @leftSignal.request = @leftSignal.request.replace /{{level}}/, level
+    @emitter.emitOne @leftSignal
+    @leftSignal.request = @leftSignal.__originRequest
 
 ###*
  # @ngdoc class
@@ -252,14 +270,16 @@ angular.module('colorizedLightApp')
     $scope.removeListenDeviceOrientation = ->
       window.removeEventListener 'deviceorientation'
 
-
     # 游戏开始
     $scope.gameStart = ->
       # Go
-      $scope.carController.go()
+      # $scope.carController.go()
 
       # 添加监听器
-      $scope.listenDeviceOrientation()
+      # $scope.listenDeviceOrientation()
+
+      # 左转
+      $scope.carController.left 2
 
       # Stop
-      $scope.carController.stop()
+      # $scope.carController.stop()

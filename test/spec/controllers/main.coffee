@@ -46,11 +46,23 @@ describe 'Controller: MainCtrl', ->
       expect(@carController.stopSignal).toBeDefined()
       expect(@carController.stopSignal.behaviour).toBe 'h'
 
+    it 'should has a variable to store left signal', ->
+      expect(@carController.leftSignal).toBeDefined()
+      expect(@carController.leftSignal.behaviour).toBe 'l'
+
     it 'should has a method to controll the car go ahead', ->
       expect(@carController.go).toBeDefined()
 
-    it 'should has a method t ocontroller the car to stop', ->
+    it 'should has a method to control the car to stop', ->
       expect(@carController.stop).toBeDefined()
+
+    it 'should has a method to control the car turn left', ->
+      expect(@carController.left).toBeDefined()
+
+    it 'the request of turn left signal should be same as original after invoke left method', ->
+      originRequest = @carController.leftSignal.request
+      @carController.left()
+      expect(@carController.leftSignal.request).toEqual originRequest
 
   describe 'Signal', ->
     beforeEach ->
@@ -85,6 +97,14 @@ describe 'Controller: MainCtrl', ->
      it 'request should be correct when behaviour equals h', ->
        @carSignal = new CarSignal 'h'
        expect(@carSignal.request).toBe 'che2.sh?\\x00\\x68\\x10'
+
+     it 'request should be correct when behaviour equals l', ->
+       @carSignal = new CarSignal 'l'
+       expect(@carSignal.request).toBe 'che2.sh?\\x01\\x6c\\x0{{level}}\\x10'
+
+     it 'request should be correct when behaviour equals r', ->
+       @carSignal = new CarSignal 'r'
+       expect(@carSignal.request).toBe 'che2.sh?\\x01\\x72\\x0{{level}}\\x10'
 
   describe 'Emitter', ->
     beforeEach ->
