@@ -125,6 +125,12 @@ body {
   -webkit-animation: #{ $str };
 }
 
+// process bar
+@include keyframes(process-bar) {
+  from { width: 1px;  }
+  to   { width: 100%; }
+}
+
 // zoom out count down number
 @include keyframes(zoom-out) {
   0% {
@@ -191,6 +197,7 @@ body {
   li {
     list-style: none;
     margin-bottom: 40px;
+    text-align: center;
 
     &:nth-child(2n) {
       @include animation('lamplet-sine 1.5s linear infinite alternate');
@@ -361,5 +368,33 @@ body {
 
   .one.animate {
     @include animation("zoom-out 1s 2s linear alternate");
+  }
+}
+
+#process-bar {
+  border-radius: 4px;
+  height: 9px;
+  border: 1px solid #483f59;
+  position: fixed;
+  left: 45px;
+  right: 45px;
+  bottom: 70px;
+
+  @media screen and (min-width: $screen-md-min) {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: -70px;
+  }
+
+  .process {
+    position: relative;
+    height: 8px;
+    border-radius: 4px;
+    @include gradient-horizontal(#60254e, #2d5978);
+  }
+
+  .process.animate {
+    @include animation("process-bar 30s linear");
   }
 }

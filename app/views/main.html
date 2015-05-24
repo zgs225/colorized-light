@@ -27,12 +27,17 @@
         ng-click="gameStart()"
         ng-show="startButton" >Start</button>
     </p>
-  </div>
 
-  <!-- Count down -->
-  <div id="count-down" ng-show="countDown">
-    <span class="three {{ countDown ? 'animate' : ''}}"></span>
-    <span class="two   {{ countDown ? 'animate' : ''}}"></span>
-    <span class="one   {{ countDown ? 'animate' : ''}}"></span>
+    <!-- Count down -->
+    <div id="count-down" ng-show="countDown">
+      <span class="three {{ countDown ? 'animate' : ''}}"></span>
+      <span class="two   {{ countDown ? 'animate' : ''}}"></span>
+      <span class="one   {{ countDown ? 'animate' : ''}}"></span>
+    </div>
+
+    <!-- Process bar -->
+    <div id="process-bar" ng-show="processBar">
+      <div class="process {{ processBar ? 'animate' : '' }}"></div>
+    </div>
   </div>
 </div>

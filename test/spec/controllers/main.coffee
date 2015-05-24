@@ -24,6 +24,9 @@ describe 'Controller: MainCtrl', ->
   it 'variable startButton in scope should be true', ->
     expect(scope.startButton).toBe true
 
+  it 'variable processBar in scope should be false', ->
+    expect(scope.processBar).toBe false
+
   describe 'Game start', ->
     it 'should has a method to start game', ->
       expect(scope.gameStart).toBeDefined()
