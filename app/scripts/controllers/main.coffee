@@ -270,6 +270,7 @@ angular.module('colorizedLightApp')
       $scope.countDown   = false
       $scope.startButton = true
       $scope.processBar  = false
+      $scope.gameOver    = true
 
     $scope.showPalette = (currentLamplet, event) ->
       $scope.currentLamplet = currentLamplet
@@ -298,10 +299,18 @@ angular.module('colorizedLightApp')
       $timeout ->
         $scope.countDown  = false
         $scope.processBar = true
+
         # Go
-        # $scope.carController.go()
+        $scope.carController.go()
 
         # Game should over after 30s
+        $timeout ->
+          $scope.processBar = false
+          $scope.gameOver   = true
+
+          # Stop
+          $scope.carController.stop()
+        , 30000
       , 3000
 
       # 添加监听器

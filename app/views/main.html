@@ -39,5 +39,19 @@
     <div id="process-bar" ng-show="processBar">
       <div class="process {{ processBar ? 'animate' : '' }}"></div>
     </div>
+
+    <!-- Game over -->
+    <div id="game-over" ng-show="gameOver">
+      <div class="container">
+        <p class="game-over">
+          <img src="/images/gameover.png" alt="Game Over" class="img-responsive">
+        </p>
+        <p class="actions">
+          <a class="exit" ng-click="exit()" href="#"></a>
+          <a class="restart" ng-click="restart()" href="#"></a>
+          <a class="share" ng-click="share()" href="#"></a>
+        </p>
+      </div>
+    </div>
   </div>
 </div>

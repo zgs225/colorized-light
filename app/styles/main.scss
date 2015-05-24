@@ -98,6 +98,18 @@ body {
   }
 }
 
+@mixin mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.33);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 800;
+}
+
 // keyframes mixin
 @mixin keyframes($animation-name) {
   @-webkit-keyframes #{ $animation-name } {
@@ -123,6 +135,12 @@ body {
       -ms-animation: #{ $str };
      -moz-animation: #{ $str };
   -webkit-animation: #{ $str };
+}
+
+// game over translate y
+@include keyframes(translate-y) {
+  from { @include translate(0, 100px); }
+  to   { @include translate(0, 0);     }
 }
 
 // process bar
@@ -317,15 +335,7 @@ body {
 
 // Count down
 #count-down {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.33);
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 800;
+  @include mask;
 
   span {
     color: white;
@@ -396,5 +406,49 @@ body {
 
   .process.animate {
     @include animation("process-bar 30s linear");
+  }
+}
+
+#game-over {
+  @include mask;
+
+  .container {
+    @include animation("translate-y 1s linear");
+    .game-over {
+      margin: 45px;
+      margin-top: 50%;
+      margin-bottom: 100px;
+      @media screen and (min-width: $screen-md-min) {
+        margin-top: 40%;
+      }
+    }
+
+    .actions {
+      a {
+        display: inline-block;
+        width: 120px;
+        height: 120px;
+        position: relative;
+      }
+
+      .exit {
+        background: url(/images/exit.png) no-repeat;
+        background-size: auto 120px;
+      }
+
+      .share {
+        background: url(/images/share.png) no-repeat;
+        background-size: auto 120px;
+      }
+
+      .restart {
+        background: url(/images/restart.png) no-repeat;
+        background-size: auto 120px;
+      }
+    }
+
+    p {
+      text-align: center;
+    }
   }
 }
