@@ -243,6 +243,12 @@ class Lamplet
 angular.module('colorizedLightApp')
   .controller 'MainCtrl', ($scope, $timeout) ->
     # Initialize
+    $scope.initGUI = ->
+      $scope.countDown   = false
+      $scope.startButton = true
+      $scope.processBar  = false
+      $scope.gameOver    = false
+
     $scope.init = ->
       # List of lamplets
       $scope.lamplets = (->
@@ -267,10 +273,7 @@ angular.module('colorizedLightApp')
       # 小车控制器
       $scope.carController = new CarController
 
-      $scope.countDown   = false
-      $scope.startButton = true
-      $scope.processBar  = false
-      $scope.gameOver    = true
+      $scope.initGUI()
 
     $scope.showPalette = (currentLamplet, event) ->
       $scope.currentLamplet = currentLamplet
@@ -315,6 +318,18 @@ angular.module('colorizedLightApp')
 
       # 添加监听器
       # $scope.listenDeviceOrientation()
+
+    # exit game
+    $scope.exit = ->
+
+    # share
+    $scope.share = ->
+      alert '敬请期待'
+
+    # restart
+    $scope.restart = ->
+      init()
+      $scope.gameStart()
 
     # Initialize
     $scope.init()
