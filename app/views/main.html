@@ -24,7 +24,15 @@
     <p class="game-start-wrapper text-center">
       <button class="button button-pill button-large button-royal button-longshadow"
         id="game-start-button"
-        ng-click="gameStart()">Start</button>
+        ng-click="gameStart()"
+        ng-show="startButton" >Start</button>
     </p>
+  </div>
+
+  <!-- Count down -->
+  <div id="count-down" ng-show="countDown">
+    <span class="three {{ countDown ? 'animate' : ''}}"></span>
+    <span class="two   {{ countDown ? 'animate' : ''}}"></span>
+    <span class="one   {{ countDown ? 'animate' : ''}}"></span>
   </div>
 </div>

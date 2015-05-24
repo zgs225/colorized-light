@@ -18,6 +18,12 @@ describe 'Controller: MainCtrl', ->
   it 'should has a car controller in scope', ->
     expect(scope.carController).toBeDefined()
 
+  it 'variable countDown in scope should be false', ->
+    expect(scope.countDown).toBe false
+
+  it 'variable startButton in scope should be true', ->
+    expect(scope.startButton).toBe true
+
   describe 'Game start', ->
     it 'should has a method to start game', ->
       expect(scope.gameStart).toBeDefined()

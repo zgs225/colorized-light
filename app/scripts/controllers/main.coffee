@@ -241,26 +241,34 @@ class Lamplet
  # Controller of the colorizedLightApp
 ###
 angular.module('colorizedLightApp')
-  .controller 'MainCtrl', ($scope) ->
-    # List of lamplets
-    $scope.lamplets = (->
-      [
-        '#e2147f', '#885a9f', '#8aacd8',
-        '#1ba2e6', '#1ba2e6', '#885a9f',
-        '#e2147f', '#8aacd8', '#1ba2e6',
-        '#1ba2e6', '#e2147f', '#8aacd8'
-      ].map (color, index) ->
-        new Lamplet color, index + 1
-    )()
+  .controller 'MainCtrl', ($scope, $timeout) ->
+    # Initialize
+    $scope.init = ->
+      # List of lamplets
+      $scope.lamplets = (->
+        [
+          '#e2147f', '#885a9f', '#8aacd8',
+          '#1ba2e6', '#1ba2e6', '#885a9f',
+          '#e2147f', '#8aacd8', '#1ba2e6',
+          '#1ba2e6', '#e2147f', '#8aacd8'
+        ].map (color, index) ->
+          new Lamplet color, index + 1
+      )()
 
-    # 给小灯分配屏幕关系
-    for lamplet in $scope.lamplets
-      for lamp in $scope.lamplets
-        lamplet.lampletsOnSameScreen.push lamp if lamplet.onScreen == lamp.onScreen
+      # 给小灯分配屏幕关系
+      for lamplet in $scope.lamplets
+        for lamp in $scope.lamplets
+          lamplet.lampletsOnSameScreen.push lamp if lamplet.onScreen == lamp.onScreen
 
-    # 同步小车灯光
-    for lamplet in $scope.lamplets
-      lamplet.synchonized()
+      # 同步小车灯光
+      for lamplet in $scope.lamplets
+        lamplet.synchonized()
+
+      # 小车控制器
+      $scope.carController = new CarController
+
+      $scope.countDown   = false
+      $scope.startButton = true
 
     $scope.showPalette = (currentLamplet, event) ->
       $scope.currentLamplet = currentLamplet
@@ -273,8 +281,6 @@ angular.module('colorizedLightApp')
     $scope.hidePalette = ->
       $scope.currentLamplet.palette.hide() if $scope.currentLamplet
 
-    $scope.carController = new CarController
-
     # 监听屏幕倾斜
     $scope.listenDeviceOrientation = ->
       window.addEventListener 'deviceorientation', (event) ->
@@ -285,14 +291,17 @@ angular.module('colorizedLightApp')
 
     # 游戏开始
     $scope.gameStart = ->
-      # Go
-      # $scope.carController.go()
+      $scope.startButton = false
+      $scope.countDown   = true
+
+      $timeout ->
+        $scope.countDown   = false
+        # Go
+        $scope.carController.go()
+      , 3000
 
       # 添加监听器
       # $scope.listenDeviceOrientation()
 
-      # 左转
-      $scope.carController.left 2
-
-      # Stop
-      # $scope.carController.stop()
+    # Initialize
+    $scope.init()
