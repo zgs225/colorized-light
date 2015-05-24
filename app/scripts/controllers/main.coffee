@@ -162,10 +162,11 @@ class Emitter
 ###
 class CarController
   constructor: ->
-    @emitter    = new Emitter
-    @goSignal   = new CarSignal 'd'
-    @stopSignal = new CarSignal 'h'
-    @leftSignal = new CarSignal 'l'
+    @emitter     = new Emitter
+    @goSignal    = new CarSignal 'd'
+    @stopSignal  = new CarSignal 'h'
+    @leftSignal  = new CarSignal 'l'
+    @rightSignal = new CarSignal 'r'
 
   go: ->
     @emitter.emitOne @goSignal
@@ -174,12 +175,24 @@ class CarController
     @emitter.emitOne @stopSignal
 
   left: (level = 1) ->
+    @turn 'left', level
+
+  right: (level = 1) ->
+    @turn 'right', level
+
+  turn: (direction, level = 1) ->
     level = 1 if level < 1
     level = 9 if level > 9
-    @leftSignal.__originRequest = @leftSignal.request
-    @leftSignal.request = @leftSignal.request.replace /{{level}}/, level
-    @emitter.emitOne @leftSignal
-    @leftSignal.request = @leftSignal.__originRequest
+
+    if direction == 'left'
+      signal = @leftSignal
+    else
+      signal = @rightSignal
+
+    signal.__originRequest = signal.request
+    signal.request = signal.request.replace /{{level}}/, level
+    @emitter.emitOne signal
+    signal.request = signal.__originRequest
 
 ###*
  # @ngdoc class

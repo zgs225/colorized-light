@@ -50,6 +50,10 @@ describe 'Controller: MainCtrl', ->
       expect(@carController.leftSignal).toBeDefined()
       expect(@carController.leftSignal.behaviour).toBe 'l'
 
+    it 'should has a variable to store right signal', ->
+      expect(@carController.rightSignal).toBeDefined()
+      expect(@carController.rightSignal.behaviour).toBe 'r'
+
     it 'should has a method to controll the car go ahead', ->
       expect(@carController.go).toBeDefined()
 
@@ -59,10 +63,21 @@ describe 'Controller: MainCtrl', ->
     it 'should has a method to control the car turn left', ->
       expect(@carController.left).toBeDefined()
 
+    it 'should has a method to control the car turn right', ->
+      expect(@carController.right).toBeDefined()
+
+    it 'should has a method to control car to turn left or right', ->
+      expect(@carController.turn).toBeDefined()
+
     it 'the request of turn left signal should be same as original after invoke left method', ->
       originRequest = @carController.leftSignal.request
       @carController.left()
       expect(@carController.leftSignal.request).toEqual originRequest
+
+    it 'the request of turn left signal should be same as original after invoke right method', ->
+      originRequest = @carController.rightSignal.request
+      @carController.right()
+      expect(@carController.rightSignal.request).toEqual originRequest
 
   describe 'Signal', ->
     beforeEach ->
