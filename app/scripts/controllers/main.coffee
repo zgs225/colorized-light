@@ -288,12 +288,33 @@ angular.module('colorizedLightApp')
     $scope.hidePalette = ->
       $scope.currentLamplet.palette.hide() if $scope.currentLamplet
 
+    $scope.sleep = (n) ->
+      startAt = new Date().getTime()
+      while (true)
+        break if new Date().getTime() - startAt > n
+
+    $scope.oldDegree = 0
+
     $scope.turnByDegree = (degree) ->
+      if Math.abs(degree) < 15
+        if $scope.oldDegree > 15
+          $scope.carController.go()
+          $scope.oldDegree = Math.abs(degree)
+          return true
+        else
+          $scope.oldDegree = Math.abs(degree)
+          return false
+
+      $scope.oldDegree = Math.abs(degree)
+
       level  = Math.floor(10 - Math.abs(degree) / 10)
+
       if degree > 0
         $scope.carController.right level
       else
         $scope.carController.left level
+
+      sleep (1 / 60) * 1000
 
     $scope.animationOfLightTail = (degree) ->
       $lightTails = angular.element '.lamplets li'
@@ -303,17 +324,19 @@ angular.module('colorizedLightApp')
         '-o-transform'      : "rotate(#{ degree }deg)"
         'transform'         : "rotate(#{ degree }deg)"
 
+    $scope.deviceOrientationListener = (event) ->
+      $scope.turnByDegree event.gamma
+      $scope.animationOfLightTail event.alpha
+
     # 监听屏幕倾斜
     $scope.listenDeviceOrientation = ->
       return false unless window && window.DeviceOrientationEvent
 
-      window.addEventListener 'deviceorientation', (event) ->
-        $scope.turnByDegree event.gamma
-        $scope.animationOfLightTail event.alpha
+      window.addEventListener 'deviceorientation', $scope.deviceOrientationListener
 
     # 移除屏幕监听
     $scope.removeListenDeviceOrientation = ->
-      window.removeEventListener 'deviceorientation'
+      window.removeEventListener 'deviceorientation', $scope.deviceOrientationListener
 
     # 切换灯光尾巴状态
     $scope.toggleLampletTail = ->
@@ -332,6 +355,7 @@ angular.module('colorizedLightApp')
         $scope.toggleLampletTail()
 
         # Go
+        $scope.carController.stop()
         $scope.carController.go()
 
         # Add listener
