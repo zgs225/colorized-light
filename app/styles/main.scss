@@ -8,6 +8,7 @@ $initial-lamplet-color: #e5147f;
 $lamplet-size: 18px;
 $action-button-size-xs: 72px;
 $action-button-size-md: 120px;
+$light-tail-size: 36px;
 
 // lighting colors
 $colors: #e30d20 #e8611e #f19725 #fdee35 #e30f53 #885a9f #5f549e #90c132 #e2147f #179c96 #1ba2e6 #2daa40 #ab5fa0 #8aacd8 #ffffff #000000;
@@ -139,6 +140,14 @@ body {
   -webkit-animation: #{ $str };
 }
 
+@mixin blur($pixel) {
+  -webkit-filter: blur($pixel);
+     -moz-filter: blur($pixel);
+      -ms-filter: blur($pixel);
+       -o-filter: blur($pixel);
+          filter: blur($pixel);
+}
+
 // game over translate y
 @include keyframes(translate-y) {
   from { @include translate(0, 100px); }
@@ -267,6 +276,12 @@ body {
           @include box-shadow(0 0 12px 12px nth($colors, $i));
         }
       }
+
+      button.color-#{ $i } + .light-tail {
+        &:before {
+          border-color: nth($colors, $i);
+        }
+      }
     }
 
     &:nth-child(4n+2) {
@@ -284,6 +299,32 @@ body {
     &:nth-child(4n+4) {
       > .palette {
         left: -115px;
+      }
+    }
+
+    // Light tail
+    .light-tail {
+      height: $light-tail-size;
+      width: $light-tail-size;
+      top: $light-tail-size;
+      overflow: hidden;
+      position: relative;
+      display: inline-block;
+      top: -5px;
+      @include rotate(302deg);
+
+      &:before {
+        content: "";
+        height: $light-tail-size * 2;
+        width: $light-tail-size * 2;
+        border-radius: 50%;
+        left: 0;
+        right: 0;
+        position: absolute;
+        border-style: solid;
+        border-width: 10px 8px 0 0;
+        @include blur(2px);
+        @include opacity(0.5);
       }
     }
 
@@ -390,7 +431,7 @@ body {
   position: fixed;
   left: 45px;
   right: 45px;
-  bottom: 70px;
+  bottom: 50px;
 
   @media screen and (min-width: $screen-md-min) {
     position: relative;

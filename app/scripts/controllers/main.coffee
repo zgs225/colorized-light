@@ -208,6 +208,7 @@ class Lamplet
     @palette  = new Palette
     @emitter  = new Emitter
     @onScreen = @whichScreen()
+    @tail     = false
     @lampletsOnSameScreen = []
 
   whichScreen: ->
@@ -287,21 +288,37 @@ angular.module('colorizedLightApp')
     $scope.hidePalette = ->
       $scope.currentLamplet.palette.hide() if $scope.currentLamplet
 
+    $scope.turnByDegree = (degree) ->
+      level  = Math.floor(10 - Math.abs(degree) / 10)
+      if degree > 0
+        $scope.carController.right level
+      else
+        $scope.carController.left level
+
+    $scope.animationOfLightTail = (degree) ->
+      $lightTails = angular.element '.lamplets li'
+      $lightTails.css
+        '-webkit-transform' : "rotate(#{ degree }deg)"
+        '-ms-transform'     : "rotate(#{ degree }deg)"
+        '-o-transform'      : "rotate(#{ degree }deg)"
+        'transform'         : "rotate(#{ degree }deg)"
+
     # 监听屏幕倾斜
     $scope.listenDeviceOrientation = ->
       return false unless window && window.DeviceOrientationEvent
 
       window.addEventListener 'deviceorientation', (event) ->
-        degree = event.gamma
-        level  = Math.floor(10 - Math.abs(degree) / 10)
-        if degree > 0
-          $scope.carController.right level
-        else
-          $scope.carController.left level
+        $scope.turnByDegree event.gamma
+        $scope.animationOfLightTail event.alpha
 
     # 移除屏幕监听
     $scope.removeListenDeviceOrientation = ->
       window.removeEventListener 'deviceorientation'
+
+    # 切换灯光尾巴状态
+    $scope.toggleLampletTail = ->
+      for lamplet in $scope.lamplets
+        lamplet.tail = !lamplet.tail
 
     # 游戏开始
     $scope.gameStart = ->
@@ -312,16 +329,20 @@ angular.module('colorizedLightApp')
         $scope.countDown  = false
         $scope.processBar = true
 
-        # Add listener
-        $scope.listenDeviceOrientation()
+        $scope.toggleLampletTail()
 
         # Go
-        # $scope.carController.go()
+        $scope.carController.go()
+
+        # Add listener
+        $scope.listenDeviceOrientation()
 
         # Game should over after 30s
         $timeout ->
           $scope.processBar = false
           $scope.gameOver   = true
+
+          $scope.toggleLampletTail()
 
           # Remove listener
           $scope.removeListenDeviceOrientation()
@@ -331,10 +352,6 @@ angular.module('colorizedLightApp')
         , 30000
       , 3000
 
-      # 添加监听器
-      # $scope.listenDeviceOrientation()
-
-    # exit game
     $scope.exit = ->
       $timeout ->
         window.location = '/'

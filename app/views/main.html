@@ -11,6 +11,9 @@
         <!-- Lamplet -->
         <button class="{{ lamplet.__class() }}" ng-click="showPalette(lamplet, $event)"></button>
 
+        <!-- Light tail -->
+        <span class="light-tail" ng-show="lamplet.tail"></span>
+
         <!-- Palette for change color -->
         <div class="palette" ng-show="lamplet.palette.visible">
           <button ng-repeat="color in lamplet.palette.colors"

@@ -204,6 +204,9 @@ describe 'Controller: MainCtrl', ->
     it 'should has a method to generate light signal', ->
       expect(@lamplet.lightSignal).toBeDefined()
 
+    it 'should has a variable tail that show or hide the light tail', ->
+      expect(@lamplet.tail).toBe false
+
   describe 'List of Lamplets', ->
     beforeEach ->
       @lamplet = scope.lamplets[0]
@@ -234,6 +237,15 @@ describe 'Controller: MainCtrl', ->
 
     it 'the lamplets on the same screen of first lamplet should be 4', ->
       expect(@lamplet.lampletsOnSameScreen.length).toBe 4
+
+    it 'tail of lamplets should be toggle', ->
+      scope.toggleLampletTail()
+      for lamplet in scope.lamplets
+        expect(lamplet.tail).toBe true
+
+      scope.toggleLampletTail()
+      for lamplet in scope.lamplets
+        expect(lamplet.tail).toBe false
 
     describe 'showPalette', ->
       it 'all lamplet\'s pallete should be hide', ->
