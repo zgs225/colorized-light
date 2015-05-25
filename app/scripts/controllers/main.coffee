@@ -191,6 +191,7 @@ class CarController
 
     signal.__originRequest = signal.request
     signal.request = signal.request.replace /{{level}}/, level
+
     @emitter.emitOne signal
     signal.request = signal.__originRequest
 
@@ -288,7 +289,15 @@ angular.module('colorizedLightApp')
 
     # 监听屏幕倾斜
     $scope.listenDeviceOrientation = ->
+      return false unless window && window.DeviceOrientationEvent
+
       window.addEventListener 'deviceorientation', (event) ->
+        degree = event.gamma
+        level  = Math.floor(10 - Math.abs(degree) / 10)
+        if degree > 0
+          $scope.carController.right level
+        else
+          $scope.carController.left level
 
     # 移除屏幕监听
     $scope.removeListenDeviceOrientation = ->
@@ -303,13 +312,19 @@ angular.module('colorizedLightApp')
         $scope.countDown  = false
         $scope.processBar = true
 
+        # Add listener
+        $scope.listenDeviceOrientation()
+
         # Go
-        $scope.carController.go()
+        # $scope.carController.go()
 
         # Game should over after 30s
         $timeout ->
           $scope.processBar = false
           $scope.gameOver   = true
+
+          # Remove listener
+          $scope.removeListenDeviceOrientation()
 
           # Stop
           $scope.carController.stop()
@@ -321,6 +336,8 @@ angular.module('colorizedLightApp')
 
     # exit game
     $scope.exit = ->
+      $timeout ->
+        window.location = '/'
 
     # share
     $scope.share = ->
@@ -328,7 +345,7 @@ angular.module('colorizedLightApp')
 
     # restart
     $scope.restart = ->
-      init()
+      $scope.initGUI()
       $scope.gameStart()
 
     # Initialize
