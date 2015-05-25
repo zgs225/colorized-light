@@ -209,11 +209,11 @@ body {
 }
 
 .stars {
-  background: black url(./images/stars.png) repeat top center;
+  background: black url(/images/stars.png) repeat top center;
 }
 
 .twinkling {
-  background: transparent url(./images/twinkling.png) repeat top center;
+  background: transparent url(/images/twinkling.png) repeat top center;
   @include animation('move-twink-back 200s linear infinite');
 }
 
@@ -400,7 +400,7 @@ body {
   }
 
   .three {
-    background: url(./images/3.png) no-repeat;
+    background: url(/images/3.png) no-repeat;
   }
 
   .three.animate {
@@ -408,7 +408,7 @@ body {
   }
 
   .two {
-    background: url(./images/2.png) no-repeat;
+    background: url(/images/2.png) no-repeat;
   }
 
   .two.animate {
@@ -416,7 +416,7 @@ body {
   }
 
   .one {
-    background: url(./images/1.png) no-repeat;
+    background: url(/images/1.png) no-repeat;
   }
 
   .one.animate {
@@ -475,17 +475,17 @@ body {
       }
 
       .exit {
-        background: url(./images/exit.png) no-repeat;
+        background: url(/images/exit.png) no-repeat;
         background-size: auto $action-button-size-xs;
       }
 
       .share {
-        background: url(./images/share.png) no-repeat;
+        background: url(/images/share.png) no-repeat;
         background-size: auto $action-button-size-xs;
       }
 
       .restart {
-        background: url(./images/restart.png) no-repeat;
+        background: url(/images/restart.png) no-repeat;
         background-size: auto $action-button-size-xs;
       }
 
