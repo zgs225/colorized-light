@@ -296,8 +296,8 @@ angular.module('colorizedLightApp')
     $scope.oldDegree = 0
 
     $scope.turnByDegree = (degree) ->
-      if Math.abs(degree) < 15
-        if $scope.oldDegree > 15
+      if Math.abs(degree) < 10
+        if $scope.oldDegree > 10
           $scope.carController.go()
           $scope.oldDegree = Math.abs(degree)
           return true
