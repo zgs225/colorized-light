@@ -6,6 +6,8 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 // settings
 $initial-lamplet-color: #e5147f;
 $lamplet-size: 18px;
+$action-button-size-xs: 72px;
+$action-button-size-md: 120px;
 
 // lighting colors
 $colors: #e30d20 #e8611e #f19725 #fdee35 #e30f53 #885a9f #5f549e #90c132 #e2147f #179c96 #1ba2e6 #2daa40 #ab5fa0 #8aacd8 #ffffff #000000;
@@ -426,24 +428,35 @@ body {
     .actions {
       a {
         display: inline-block;
-        width: 120px;
-        height: 120px;
+        width: $action-button-size-xs;
+        height: $action-button-size-xs;
         position: relative;
       }
 
       .exit {
         background: url(/images/exit.png) no-repeat;
-        background-size: auto 120px;
+        background-size: auto $action-button-size-xs;
       }
 
       .share {
         background: url(/images/share.png) no-repeat;
-        background-size: auto 120px;
+        background-size: auto $action-button-size-xs;
       }
 
       .restart {
         background: url(/images/restart.png) no-repeat;
-        background-size: auto 120px;
+        background-size: auto $action-button-size-xs;
+      }
+
+      @media screen and (min-width: $screen-md-min) {
+        a {
+          width: $action-button-size-md;
+          height: $action-button-size-md;
+        }
+
+        .exit, .share, .restart {
+          background-size: auto $action-button-size-md;
+        }
       }
     }
 
